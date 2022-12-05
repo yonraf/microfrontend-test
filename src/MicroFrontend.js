@@ -16,8 +16,9 @@ class MicroFrontend extends React.Component {
         const script = document.createElement('script');
         script.id = scriptId;
         script.crossOrigin = '';
-        script.src = `${host}${manifest['main.js']}`;
+        script.src = `${host}${manifest['files']['main.js']}`;
         script.onload = this.renderMicroFrontend;
+        console.log(manifest)
         document.head.appendChild(script);
       });
   }
@@ -25,13 +26,14 @@ class MicroFrontend extends React.Component {
   componentWillUnmount() {
     const { name, window } = this.props;
 
-    window[`unmount${name}`](`${name}-container`);
+    //window[`unmount${name}`](`${name}-container`);
+    if(window[name]) window[name].unmount()
   }
 
   renderMicroFrontend = () => {
     const { name, window} = this.props;
 
-    window[`render${name}`](`${name}-container`);
+    window[name].render(`${name}-container`)
   };
 
   render() {

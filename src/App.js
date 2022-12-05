@@ -3,22 +3,22 @@ import MicroFrontend from './MicroFrontend';
 
 
 const {
-  REACT_APP_BROWSE_HOST: browseHost,
+  REACT_APP_WIDGET_HOST: widgetHost,
   REACT_APP_RESTAURANT_HOST: restaurantHost,
 } = process.env;
 
-const Browse = ({ history }) => (
-  <MicroFrontend history={history} host={browseHost} name="Browse" />
-);
-const Restaurant = ({ history }) => (
-  <MicroFrontend history={history} host={restaurantHost} name="Restaurant" />
-);
+const Widget = () => {
+  console.log(widgetHost)
+  return <MicroFrontend host={widgetHost} name="Widget" />
+};
+// const Restaurant = ({ history }) => (
+//   <MicroFrontend history={history} host={restaurantHost} name="Restaurant" />
+// );
 
 function App() {
   return (
     <div className="App">
-      <Browse/>
-      <Restaurant/>
+      <Widget/>
     </div>
   );
 }
