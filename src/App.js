@@ -8,8 +8,7 @@ const {
 } = process.env;
 
 const Widget = () => {
-  console.log(widgetHost)
-  return <MicroFrontend host={widgetHost} name="Widget" />
+  return <MicroFrontend host={widgetHost} />
 };
 // const Restaurant = ({ history }) => (
 //   <MicroFrontend history={history} host={restaurantHost} name="Restaurant" />
@@ -18,6 +17,8 @@ const Widget = () => {
 function App() {
   return (
     <div className="App">
+    <Widget/>
+      <Widget/>
       <Widget/>
     </div>
   );

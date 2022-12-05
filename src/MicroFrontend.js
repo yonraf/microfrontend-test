@@ -1,43 +1,46 @@
-import React from 'react';
+import React, { useId } from 'react';
+import uniqueId from 'lodash/uniqueId'
+
 
 class MicroFrontend extends React.Component {
+  name = undefined
+  scriptId = `micro-frontend-script-${uniqueId()}`
+  containerId = `${uniqueId()}-container`
+
+  state = {
+    isLoading: false
+  }
+
   componentDidMount() {
-    const { name, host, document } = this.props;
-    const scriptId = `micro-frontend-script-${name}`;
+    const { host, document } = this.props;
 
-    if (document.getElementById(scriptId)) {
-      this.renderMicroFrontend();
-      return;
-    }
-
-    fetch(`${host}/asset-manifest.json`)
+    fetch(`${host}/manifest.json`)
       .then(res => res.json())
       .then(manifest => {
+        this.name = manifest.name
         const script = document.createElement('script');
-        script.id = scriptId;
+        script.id = this.scriptId;
         script.crossOrigin = '';
-        script.src = `${host}${manifest['files']['main.js']}`;
+        script.src = `${host}${manifest['main.js']}`;
         script.onload = this.renderMicroFrontend;
-        console.log(manifest)
         document.head.appendChild(script);
       });
   }
 
   componentWillUnmount() {
-    const { name, window } = this.props;
+    const { window } = this.props;
 
-    //window[`unmount${name}`](`${name}-container`);
-    if(window[name]) window[name].unmount()
+    if(window[this.name]) window[this.name].unmount()
   }
 
   renderMicroFrontend = () => {
-    const { name, window} = this.props;
+    const {window} = this.props;
 
-    window[name].render(`${name}-container`)
+    window[this.name].render(this.containerId)
   };
 
   render() {
-    return <div id={`${this.props.name}-container`}></div>;
+    return <div id={this.containerId}></div>;
   }
 }
 
